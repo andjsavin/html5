@@ -1,0 +1,29 @@
+#playlist {
+    display:table;
+}
+#playlist li{
+    cursor:pointer;
+    padding:8px;
+}
+#curlist {
+    display:table;
+}
+#curlist ul li{
+    cursor:pointer;
+    padding:8px;
+    list-style-type: none;
+    display: inline;
+}
+#curlist ul li:hover{
+    color:blue;                        
+}
+#playlist li:hover{
+    color:blue;                        
+}
+#player {
+    float:left;
+    width:640px;
+    height:480px;
+    margin:10px;    
+    border:1px solid silver;
+}

@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <video id="player" controls autoplay poster="" src=""></video>
+    <form id = "addform">
+        Add:<input type="text" id = "add">
+        <input type="submit" value="+">
+    </form>
+    <ul id="curlist">
+    </ul>
+    <script type="text/javascript">
+        function indexInParent(node) {
+            var children = node.parentNode.childNodes;
+            var num = 0;
+            for (var i = 0; i < children.length; i++) {
+                if (children[i] == node) return num;
+                if (children[i].nodeType == 1) num++;
+            }
+            return -1;
+        }
+        var player = document.getElementById("player");
+        var ul = document.getElementById("curlist").addEventListener("click", function (e) {
+            if (e.target.hasAttribute("moviename")){
+                player.setAttribute("src", playlist[indexInParent(e.target.parentNode)]);
+                curVideo = indexInParent(e.target.parentNode);
+            }
+            if (e.target.hasAttribute("action")) {
+                if (e.target.getAttribute("action") == "-") {
+                    var urllist = document.querySelectorAll("#curlist ul");
+                    var index = indexInParent(e.target.parentNode);
+                    playlist.splice(index, 1);
+                    urllist[index].parentNode.removeChild(urllist[index]);
+                }
+                if (e.target.getAttribute("action") == "^") {
+                    var urllist = document.querySelectorAll("#curlist ul");
+                    var index = indexInParent(e.target.parentNode);
+                    if (index == 0) {
+                        if (curVideo == index) {
+                            curVideo = playlist.length - 1;
+                        }
+                        else if (curVideo == playlist.length - 1) {
+                            curVideo = index;
+                        }
+                        var temp1 = playlist[index];
+                        for (var i = 1; i < playlist.length; i++) {
+                            var temp = playlist[i - 1];
+                            playlist[i - 1] = playlist[i];
+                            playlist[i] = temp;
+                        }
+                        playlist[playlist.length - 1] = temp1;
+                        var temp2 = urllist[index].getAttribute("movieurl");
+                        for (var i = 1; i < urllist.length; i++) {
+                            var temp = urllist[i - 1].getAttribute("movieurl");
+                            urllist[i - 1].setAttribute("movieurl", urllist[i].getAttribute("movieurl"));
+                            e.target.parentNode.parentNode.childNodes[i].childNodes[0].setAttribute("moviename", e.target.parentNode.parentNode.childNodes[i + 1].childNodes[0].getAttribute("moviename"));
+                            e.target.parentNode.parentNode.childNodes[i].childNodes[0].innerHTML = e.target.parentNode.parentNode.childNodes[i + 1].childNodes[0].innerHTML
+                            urllist[i].setAttribute("movieurl", temp);
+                            e.target.parentNode.parentNode.childNodes[i + 1].childNodes[0].setAttribute("moviename", temp);
+                            e.target.parentNode.parentNode.childNodes[i + 1].childNodes[0].innerHTML = temp;
+                        }
+                        urllist[urllist.length - 1].setAttribute("movieurl", temp2);
+                        e.target.parentNode.parentNode.childNodes[urllist.length].childNodes[0].setAttribute("moviename", temp2);
+                        e.target.parentNode.parentNode.childNodes[urllist.length].childNodes[0].innerHTML = temp2;
+                    } else {
+                        if (curVideo == index) {
+                            curVideo = index - 1;
+                        }
+                        else if (curVideo == index - 1) {
+                            curVideo = index;
+                        }
+                        var temp1 = playlist[index - 1];
+                        playlist[index - 1] = playlist[index];
+                        playlist[index] = temp1;
+                        var temp2 = urllist[index - 1].getAttribute("movieurl");
+                        urllist[index - 1].setAttribute("movieurl", urllist[index].getAttribute("movieurl"));
+                        e.target.parentNode.parentNode.childNodes[index].childNodes[0].setAttribute("moviename", e.target.parentNode.parentNode.childNodes[index + 1].childNodes[0].getAttribute("moviename"));
+                        e.target.parentNode.parentNode.childNodes[index].childNodes[0].innerHTML = e.target.parentNode.parentNode.childNodes[index + 1].childNodes[0].innerHTML
+                        urllist[index].setAttribute("movieurl", temp2);
+                        e.target.parentNode.parentNode.childNodes[index + 1].childNodes[0].setAttribute("moviename", temp2);
+                        e.target.parentNode.parentNode.childNodes[index + 1].childNodes[0].innerHTML = temp2;
+                    }
+                }
+                if (e.target.getAttribute("action") == "v") {
+                    var urllist = document.querySelectorAll("#curlist ul");
+                    var index = indexInParent(e.target.parentNode);
+                    if (index == playlist.length - 1) {
+                        if (curVideo == index) {
+                            curVideo = 0;
+                        }
+                        else if (curVideo == 0) {
+                            curVideo = index;
+                        }
+                        var temp1 = playlist[index];
+                        for (var i = 0; i < playlist.length - 1; i++) {
+                            var temp = playlist[i + 1];
+                            playlist[i + 1] = playlist[i];
+                            playlist[i] = temp;
+                        }
+                        playlist[0] = temp1;
+                        var temp2 = urllist[index].getAttribute("movieurl");
+                        for (var i = 0; i < urllist.length - 1; i++) {
+                            var temp = urllist[i + 1].getAttribute("movieurl");
+                            urllist[i + 1].setAttribute("movieurl", urllist[i].getAttribute("movieurl"));
+                            e.target.parentNode.parentNode.childNodes[i + 2].childNodes[0].setAttribute("moviename", e.target.parentNode.parentNode.childNodes[i + 1].childNodes[0].getAttribute("moviename"));
+                            e.target.parentNode.parentNode.childNodes[i + 2].childNodes[0].innerHTML = e.target.parentNode.parentNode.childNodes[i + 1].childNodes[0].innerHTML
+                            urllist[i].setAttribute("movieurl", temp);
+                            e.target.parentNode.parentNode.childNodes[i + 1].childNodes[0].setAttribute("moviename", temp);
+                            e.target.parentNode.parentNode.childNodes[i + 1].childNodes[0].innerHTML = temp;
+                        }
+                        urllist[0].setAttribute("movieurl", temp2);
+                        e.target.parentNode.parentNode.childNodes[1].childNodes[0].setAttribute("moviename", temp2);
+                        e.target.parentNode.parentNode.childNodes[1].childNodes[0].innerHTML = temp2;
+                    } else {
+                        if (curVideo == index) {
+                            curVideo = index + 1;
+                        }
+                        else if (curVideo == index + 1) {
+                            curVideo = index;
+                        }
+                        var temp1 = playlist[index + 1];
+                        playlist[index + 1] = playlist[index];
+                        playlist[index] = temp1;
+                        var temp2 = urllist[index + 1].getAttribute("movieurl");
+                        urllist[index + 1].setAttribute("movieurl", urllist[index].getAttribute("movieurl"));
+                        e.target.parentNode.parentNode.childNodes[index + 2].childNodes[0].setAttribute("moviename", e.target.parentNode.parentNode.childNodes[index + 1].childNodes[0].getAttribute("moviename"));
+                        e.target.parentNode.parentNode.childNodes[index + 2].childNodes[0].innerHTML = e.target.parentNode.parentNode.childNodes[index + 1].childNodes[0].innerHTML
+                        urllist[index].setAttribute("movieurl", temp2);
+                        e.target.parentNode.parentNode.childNodes[index + 1].childNodes[0].setAttribute("moviename", temp2);
+                        e.target.parentNode.parentNode.childNodes[index + 1].childNodes[0].innerHTML = temp2;
+                    }
+                }
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        var playlist = [];
+        var curVideo = 0;
+        var player = document.getElementById("player");
+        var pl = document.getElementById("curlist");
+        var add = document.getElementById("addform").addEventListener("submit", function (e) {
+            e.preventDefault();
+            var ul = document.createElement("ul");
+            var liname = document.createElement("li");
+            var lirem = document.createElement("li");
+            var liup = document.createElement("li");
+            var lidown = document.createElement("li");
+            ul.setAttribute("movieurl", document.getElementById("add").value);
+            lirem.setAttribute("action", "-");
+            lirem.setAttribute("url", document.getElementById("add").value);
+            liup.setAttribute("action", "^");
+            liup.setAttribute("url", document.getElementById("add").value);
+            lidown.setAttribute("action", "v");
+            lidown.setAttribute("url", document.getElementById("add").value);
+            liname.setAttribute("moviename", document.getElementById("add").value);
+            lirem.appendChild(document.createTextNode("-     "));
+            liup.appendChild(document.createTextNode("^     "));
+            lidown.appendChild(document.createTextNode("v"));
+            liname.appendChild(document.createTextNode(document.getElementById("add").value));
+            ul.appendChild(liname);
+            ul.appendChild(lirem);
+            ul.appendChild(liup);
+            ul.appendChild(lidown);
+            pl.appendChild(ul);
+            playlist.push(document.getElementById("add").value);
+        });
+        player.onended = function () {
+            ++curVideo;
+            if (playlist.length == 0) {
+                player.setAttribute("src", "");
+            }
+            else if (curVideo < playlist.length) {
+                player.setAttribute("src", playlist[curVideo]);
+            } else {
+                curVideo = 0;
+                player.setAttribute("src", playlist[curVideo]);
+            }
+        }
+    </script>
+</body>
+
+</html>

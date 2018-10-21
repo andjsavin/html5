@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <video id="player" controls="controls" poster="" src=""></video>
+    <ul id="playlist">
+        <li movieurl="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4">Big Buck Bunny</li>
+        <li movieurl="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ElephantsDream.mp4">Elephants Dream</li>
+        <li movieurl="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4">For Bigger Blazes</li>
+        <li movieurl="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4">For Bigger Escapes</li>
+        <li movieurl="http://commondatastorage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4">For Bigger Fun</li>
+    </ul>
+    <script type="text/javascript">
+        var player = document.getElementById("player");
+        var ul = document.getElementById("playlist").addEventListener("click", function (e) {
+            player.setAttribute("src", e.target.getAttribute("movieurl"))
+        });
+    </script>
+</body>
+
+</html>
